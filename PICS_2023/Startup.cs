@@ -41,7 +41,7 @@ namespace PICS_2023
                 app.UseSwagger();
                 app.UseSwaggerUI(c =>
                 {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My Test1 Api v1");
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "PICS 2023");
                 });
             }
             else
