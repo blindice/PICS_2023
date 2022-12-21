@@ -27,6 +27,7 @@ namespace PICS_2023.Model.Context
         public virtual DbSet<tbl_m_DQCS_Supplier> tbl_m_DQCS_Suppliers { get; set; }
         public virtual DbSet<tbl_m_DQCS_SupplierFTP> tbl_m_DQCS_SupplierFTPs { get; set; }
         public virtual DbSet<tbl_m_DQCS_TEN> tbl_m_DQCS_TENs { get; set; }
+        public virtual DbSet<tbl_m_user> tbl_m_users { get; set; }
         public virtual DbSet<tbl_t_DQCS_ICT> tbl_t_DQCS_ICTs { get; set; }
         public virtual DbSet<tbl_t_DQCS_QPIT> tbl_t_DQCS_QPITs { get; set; }
         public virtual DbSet<tbl_t_DQCS_supplierUpload> tbl_t_DQCS_supplierUploads { get; set; }
@@ -152,6 +153,17 @@ namespace PICS_2023.Model.Context
             {
                 entity.HasKey(e => e.tenID)
                     .HasName("PK__tbl_m_DQ__FB74B1081273C1CD");
+            });
+
+            modelBuilder.Entity<tbl_m_user>(entity =>
+            {
+                entity.Property(e => e.CreatedBy).IsUnicode(false);
+
+                entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.UpdatedBy).IsUnicode(false);
+
+                entity.Property(e => e.UserName).IsUnicode(false);
             });
 
             modelBuilder.Entity<tbl_t_DQCS_ICT>(entity =>
