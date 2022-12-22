@@ -10,9 +10,11 @@ import { motion } from 'framer-motion'
 import Toast from '../../../components/Toast'
 import { useLoginMutation } from '../api'
 import { ResponseStatus as res } from '../../../util/Enum'
+import useToken from '../../../hooks/useToken'
 import { style } from './style'
 
 export default function Login() {
+  const { saveToken } = useToken()
   const [login, { isLoading }] = useLoginMutation()
   const navigate = useNavigate()
   const {
@@ -23,14 +25,18 @@ export default function Login() {
     defaultValues: { username: '', password: '' },
   })
 
-  const handleFormSubmit = (data) => {
-    login(data)
-      .unwrap()
-      .then(({ Status, Message }) => {
-        if (Status === res.Error) toast(Message, { type: 'error' })
-        else navigate('test')
-      })
-      .catch((err) => toast(err, { type: 'error' }))
+  const handleFormSubmit = async (data) => {
+    try {
+      const { Status, result, Message } = await login(data).unwrap()
+
+      if (Status === res.Error) toast(Message, { type: 'error' })
+      else {
+        saveToken(result)
+        navigate('dashboard')
+      }
+    } catch (err) {
+      toast(err, { type: 'error' })
+    }
   }
 
   const animation = (myDelay) => {
@@ -92,8 +98,8 @@ export default function Login() {
           </motion.div>
           <motion.div
             animate={animation(0.3)}
-            whileHover={{ scaleX: 1.02 }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={{ scaleX: 1.02, transition: { duration: 0.1 } }}
+            whileTap={{ scale: 0.98 }}
           >
             <LoadingButton
               variant="contained"
